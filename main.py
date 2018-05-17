@@ -58,12 +58,18 @@ class game():
         # Draw the grid on the canvas.
         for i in range(16):
             for j in range(16):
-                self.canvas.create_rectangle(i*30, j*30, (i+1)*30, (j+1)*30)# fill as grey
+                self.canvas.create_rectangle(i*30, j*30, (i+1)*30, (j+1)*30,fill='black')
+                #now for the littler rectangle the color white
+                #this makes it look like there are thick boudries
+                #eventually i may try to shade to get some 3D popping
+                self.canvas.create_rectangle(i*30, j*30, (i+1)*30-3, (j+1)*30-3,fill='white')# fill as grey
+
         # Focus the mouse on the canvas.
         self.canvas.focus_set()
 
         #bind to the mousepad
         self.canvas.bind("<Button-1>", self.playGame)
+        self.canvas.bind("<Button-3>", self.test)
         
         
     def playGame(self,event):
@@ -82,6 +88,8 @@ class game():
         return
     def updateBoard(self,y,x):
         #takes a coordinate in the form of a double and updates the board
+        #it might have something there we have to cover it
+        self.canvas.create_rectangle(x*30, y*30, (x+1)*30-3, (y+1)*30-3,fill='white')
         #draw the number on the board
         self.canvas.create_text(x*30+15, y*30+15, text=str(self.board[(y,x)].val).upper())
         return
@@ -93,6 +101,11 @@ class game():
         #rebind button so it wont work
         #make a restart option
 
+        return
+    def test(self,event):
+        row = event.y//30
+        col = event.x//30
+        self.canvas.create_text(col*30+15, row*30+15, text='X', fill='blue')
         return
 
 class node():
