@@ -6,7 +6,7 @@ from tkinter import *
 #-1 or 0
 import random
 
-class game():
+class Game():
     '''A MineSweeper game'''
 
     def __init__(self): # a constructor
@@ -97,10 +97,32 @@ class game():
         #updates the board to show all cells
         #end the game
         self.canvas.create_text(x*30+15, y*30+15, text='O', fill='red')
+        
+        #make a new game over window.
+        self.window = Tk()
+        self.window.title('MineSweeper')
+        self.button1=Radiobutton(self.window, height = 2, bg='white',text="Restart",command=self.gameRestart,indicatoron=False)
+        self.button1.pack()
+        
+        #another quit button
+        self.button2=Radiobutton(self.window, height = 2, bg='white',text="Quit",command=self.quitGame,indicatoron=False)
+        self.button2.pack()
+        #if restart is selscted, new menu, delete game window, delete restart window7
+        
         #make a new text block saying game over
         #rebind button so it wont work
         #make a restart option
+    #restart calls another menu object and delees self. canvas
+    def gameRestart(self):
+        self.canvas.quit()
+        self.canvas.destroy()
+        self.canvas=None
+        self.window.destroy()
+        self.menu=Menu()
 
+        return
+    def quitGame(self):
+        self.canvas.delete()
         return
     def test(self,event):
         row = event.y//30
@@ -126,5 +148,35 @@ class node():
         else:
             return False
         
+#a menu displays play or quit
+class Menu():
+    def __init__(self):
+        #start a start menu
+        self.start()
+        
+        
+    def start(self):
+        #opens a start window
+        self.window = Tk()
+        self.window.title('MineSweeper')
+        self.button1=Radiobutton(self.window, height = 2, bg='white',text="Start",command=self.begin,indicatoron=False)
+        self.button1.pack()
+        
+        #another quit button
+        self.button2=Radiobutton(self.window, height = 2, bg='white',text="Quit",command=self.quitGame,indicatoron=False)
+        self.button2.pack()
+        self.button1.focus_set()
+    def begin(self):
+        self.window.destroy()
+        self.game=Game()
+        return
+         
+        
+
+    def quitGame(self):
+        self.window.destroy()
+        #delete the object
+        #delete itself
+        
 if __name__ == "__main__":
-    game()
+    Menu()
